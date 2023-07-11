@@ -14,22 +14,27 @@ class ViewController: UIViewController {
     @IBOutlet weak var taxTextField: UITextField!
     @IBOutlet weak var taxPriceLabel: UILabel!
 
+    private let taxKey = "taxKey"
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let text1 = UserDefaults.standard.string(forKey: "taxKey") {
-            self.taxTextField.text = text1
+        if let taxText = UserDefaults.standard.string(forKey: taxKey) {
+            self.taxTextField.text = taxText
         }
     }
 
     @IBAction func calculationButton(_ sender: Any) {
-        if let noTaxPrice = Int(noTaxTextField.text ?? ""),let tax = Int(taxTextField.text ?? "") {
-            let result = Int(noTaxPrice * (100 + tax)/100)
-            print(result)
-            taxPriceLabel.text = "\(result)"
-            UserDefaults.standard.set(taxTextField.text, forKey: "taxKey")
+        let taxPriceText: String
+
+        if let noTaxText = Int(noTaxTextField.text ?? ""), let taxText = Int(taxTextField.text ?? "") {
+            let result = Int(noTaxText * (100 + taxText)/100)
+            taxPriceText = "\(result)"
+            UserDefaults.standard.set(taxText, forKey: taxKey)
         } else {
-            taxPriceLabel.text = ""
+            taxPriceText = ""
         }
+
+        taxPriceLabel.text = taxPriceText
     }
 }
